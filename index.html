@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paylio - Crypto Dashboard</title>
+    <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --primary: #b0f127;
+        }
+        body {
+            background-color: #ffffff;
+            color: #1a1a1a;
+        }
+        .sidebar {
+            background-color: #f8f9fa;
+            transition: all 0.3s;
+        }
+        .card {
+            background-color: #ffffff;
+            border: 1px solid rgba(176, 241, 39, 0.1);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+        .btn-primary {
+            background-color: var(--primary);
+            color: #1a1a1a;
+        }
+        .chart-container {
+            position: relative;
+            height: 300px;
+            width: 100%;
+        }
+        .glow {
+            box-shadow: 0 0 15px rgba(176, 241, 39, 0.2);
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f8f9fa;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-gray-50">
+    <!-- Same structure as before but with light theme colors -->
+    <div class="flex">
+        <aside class="sidebar fixed h-full w-64 p-4 hidden md:block border-r border-gray-200">
+            <div class="flex items-center mb-8">
+                <span class="text-2xl font-bold text-gray-800">Paylio</span>
+            </div>
+            <nav class="space-y-4">
+                <a href="#" class="flex items-center space-x-3 p-2 rounded hover:bg-gray-100 text-gray-700">
+                    <i class="bi bi-grid-1x2-fill text-green-600"></i>
+                    <span>Dashboard</span>
+                </a>
+                <!-- Other nav items with light theme styling -->
+            </nav>
+        </aside>
+
+        <main class="flex-1 ml-0 md:ml-64 min-h-screen">
+            <header class="bg-white border-b border-gray-200 p-4">
+                <div class="flex justify-between items-center">
+                    <div class="flex items-center">
+                        <button class="md:hidden mr-4">
+                            <i class="bi bi-list text-2xl text-gray-700"></i>
+                        </button>
+                        <div class="relative">
+                            <input type="text" placeholder="Search..." class="bg-gray-100 rounded-lg px-4 py-2 w-64 text-gray-700">
+                            <i class="bi bi-search absolute right-3 top-3 text-gray-400"></i>
+                        </div>
+                    </div>
+                    <!-- Header content with light theme styling -->
+                </div>
+            </header>
+
+            <div class="p-6 space-y-6">
+                <!-- Cards with light theme styling -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div class="card rounded-xl p-6 bg-white">
+                        <div class="flex justify-between items-center">
+                            <div>
+                                <p class="text-gray-600">Total Balance</p>
+                                <h3 class="text-2xl font-bold text-gray-800">$24,563.00</h3>
+                                <p class="text-green-600">+2.5%</p>
+                            </div>
+                            <i class="bi bi-wallet2 text-3xl text-green-600"></i>
+                        </div>
+                    </div>
+                    <!-- Other cards with light theme styling -->
+                </div>
+
+                <!-- Chart Section -->
+                <div class="card rounded-xl p-6 bg-white">
+                    <h2 class="text-xl font-bold mb-4 text-gray-800">Paylio Price Chart</h2>
+                    <div class="chart-container">
+                        <canvas id="priceChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Recent Transactions -->
+                <div class="card rounded-xl p-6 bg-white">
+                    <h2 class="text-xl font-bold mb-4 text-gray-800">Recent Transactions</h2>
+                    <div class="overflow-x-auto">
+                        <table class="w-full">
+                            <thead>
+                                <tr class="text-left text-gray-600">
+                                    <th class="pb-4">Date</th>
+                                    <th class="pb-4">Type</th>
+                                    <th class="pb-4">Amount</th>
+                                    <th class="pb-4">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="border-t border-gray-200">
+                                    <td class="py-4 text-gray-800">2024-01-20</td>
+                                    <td class="py-4 text-gray-800">Buy</td>
+                                    <td class="py-4 text-gray-800">1,000 PLO</td>
+                                    <td class="py-4"><span class="bg-green-100 text-green-600 px-2 py-1 rounded-full">Completed</span></td>
+                                </tr>
+                                <!-- Other transaction rows -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Same JavaScript as before but with light theme colors for the chart
+        const ctx = document.getElementById('priceChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+                datasets: [{
+                    label: 'Paylio Price',
+                    data: [0.01, 0.015, 0.012, 0.018, 0.016, 0.02],
+                    borderColor: '#b0f127',
+                    backgroundColor: 'rgba(176, 241, 39, 0.1)',
+                    fill: true,
+                    tension: 0.4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                },
+                scales: {
+                    y: {
+                        grid: {
+                            color: 'rgba(0, 0, 0, 0.1)'
+                        },
+                        ticks: {
+                            color: '#666'
+                        }
+                    },
+                    x: {
+                        grid: {
+                            color: 'rgba(0, 0, 0, 0.1)'
+                        },
+                        ticks: {
+                            color: '#666'
+                        }
+                    }
+                }
+            }
+        });
+
+        // Same functionality as before
+        function toggleSidebar() {
+            const sidebar = document.querySelector('.sidebar');
+            sidebar.classList.toggle('hidden');
+        }
+
+        setInterval(() => {
+            const prices = document.querySelectorAll('.price');
+            prices.forEach(price => {
+                const currentPrice = parseFloat(price.textContent);
+                const change = (Math.random() - 0.5) * 0.001;
+                price.textContent = (currentPrice + change).toFixed(4);
+            });
+        }, 2000);
+    </script>
+<script>document.body.addEventListener('wheel', e => { if (!e.ctrlKey) return; e.preventDefault(); return }, { passive: false })</script>
+	</body>
+</html>
